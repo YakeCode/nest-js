@@ -7,12 +7,10 @@ import { UserDelete } from 'src/lib/user/application/UserDelete';
 
 const UserRepository = new MemoryUserRepository();
 
-export const serviceContainer = {
-  user: {
-    getAll: new UserGetAll(UserRepository),
-    getById: new UserGetById(UserRepository),
-    create: new UserCreate(UserRepository),
-    update: new UserUpdate(UserRepository),
-    delete: new UserDelete(UserRepository),
-  },
+export const userServiceContainer = {
+  getAll: new UserGetAll(UserRepository),
+  getById: new UserGetById(UserRepository),
+  create: new UserCreate(UserRepository),
+  update: new UserUpdate(UserRepository),
+  delete: new UserDelete(UserRepository),
 };
