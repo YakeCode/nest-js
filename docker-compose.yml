@@ -1,7 +1,7 @@
 services:
   # BD para desarrollo
   postgres:
-    image: postgres:18
+    image: postgres:16
     container_name: nest-test
     restart: unless-stopped
     environment:

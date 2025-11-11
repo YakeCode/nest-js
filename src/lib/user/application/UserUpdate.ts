@@ -9,7 +9,7 @@ import { User } from '../domain/User';
 import { UserNotFoundError } from '../domain/UserNotFoundError';
 
 export interface UserUpdateDto {
-  id: number;
+  userId: number;
   name?: string;
   email?: string;
   password?: string;
@@ -20,12 +20,17 @@ export class UserUpdate {
   constructor(private repository: UserRepository) {}
 
   async run(dto: UserUpdateDto): Promise<void> {
-    const user = await this.repository.getById(new UserId(dto.id));
+    const user = await this.repository.getById(new UserId(dto.userId));
 
     if (!user) throw new UserNotFoundError();
 
-    const newUser = new User(user.userId, dto.name ? new UserName(dto.name) : user.name, dto.email ? new UserEmail(dto.email) : user.email, dto.password ? new UserPassword(await bcrypt.hash(dto.password, 10)) : user.password, dto.role ? new UserRole(dto.role) : user.role);
+    if (dto.name) user.name = new UserName(dto.name);
+    if (dto.email) user.email = new UserEmail(dto.email);
+    if (dto.role) user.role = new UserRole(dto.role);
+    if (dto.password) {
+      user.password = new UserPassword(await bcrypt.hash(dto.password, 10));
+    }
 
-    await this.repository.update(newUser);
+    await this.repository.update(user);
   }
 }

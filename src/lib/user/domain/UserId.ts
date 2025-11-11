@@ -1,15 +1,22 @@
 export class UserId {
-  private currentId: number = 100;
-  value: number;
+  private static currentId: number = 1;
+  readonly value: number;
+
   constructor(value?: number) {
-    if (!value) {
-      value = this.currentId++;
+    if (value === undefined || value === null) {
+      this.value = UserId.currentId++;
+    } else {
+      this.isValid(value);
+      this.value = value;
     }
-    this.value = value;
   }
 
-  isValid(value: number) {
-    if (typeof value !== 'number') throw new Error('Invalid user id, must be a number');
-    if (value <= 0) throw new Error('user id must be greater than 0');
+  private isValid(value: number) {
+    if (typeof value !== 'number' || !Number.isInteger(value)) {
+      throw new Error('Invalid user id, must be an integer.');
+    }
+    if (value <= 0) {
+      throw new Error('User id must be a positive integer.');
+    }
   }
 }

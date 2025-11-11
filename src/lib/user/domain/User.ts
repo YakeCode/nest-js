@@ -11,8 +11,8 @@ export class User {
   password: UserPassword;
   role: UserRole;
 
-  constructor(userId: UserId, name: UserName, email: UserEmail, password: UserPassword, role: UserRole) {
-    this.userId = userId;
+  constructor(name: UserName, email: UserEmail, password: UserPassword, role: UserRole, userId?: UserId) {
+    this.userId = userId ?? new UserId();
     this.name = name;
     this.email = email;
     this.password = password;
