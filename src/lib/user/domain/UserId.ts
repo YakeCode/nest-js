@@ -1,7 +1,10 @@
 export class UserId {
+  private currentId: number = 100;
   value: number;
-  constructor(value: number) {
-    this.isValid(value);
+  constructor(value?: number) {
+    if (!value) {
+      value = this.currentId++;
+    }
     this.value = value;
   }
 

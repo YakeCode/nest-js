@@ -7,13 +7,14 @@ import { UserUpdate } from '../application/UserUpdate';
 import { UserDelete } from '../application/UserDelete';
 import { UserRepository } from '../domain/UserRepository';
 import { MemoryUserRepository } from './MemoryUserRepository';
+import { UserGetByEmail } from '../application/UserGetByEmail';
 
 const userRepositoryProvider = {
   provide: 'UserRepository',
   useClass: MemoryUserRepository,
 };
 
-const userUseCases: Provider[] = [UserGetAll, UserGetById, UserCreate, UserUpdate, UserDelete].map((useCase) => ({
+const userUseCases: Provider[] = [UserGetAll, UserGetById, UserCreate, UserUpdate, UserDelete, UserGetByEmail].map((useCase) => ({
   provide: useCase,
   useFactory: (userRepository: UserRepository) => new useCase(userRepository),
   inject: ['UserRepository'],
@@ -22,5 +23,6 @@ const userUseCases: Provider[] = [UserGetAll, UserGetById, UserCreate, UserUpdat
 @Module({
   controllers: [UsersController],
   providers: [userRepositoryProvider, ...userUseCases],
+  exports: [userRepositoryProvider, UserGetByEmail],
 })
 export class UserModule {}

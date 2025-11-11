@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
+import { JwtRefreshStrategy } from './jwt-refresh.strategy';
 import { ENV } from '../../../config/env';
 
 @Module({
@@ -19,7 +20,7 @@ import { ENV } from '../../../config/env';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, LocalStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy],
   exports: [PassportModule, JwtModule, AuthService, JwtStrategy, LocalStrategy],
 })
 export class AuthModule {}

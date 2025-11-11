@@ -1,4 +1,8 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { Roles } from '../../auth/infrastructure/roles.decorator';
+import { RolesGuard } from '../../auth/infrastructure/roles.guard';
+import { Role } from '../domain/UserRole';
 import { UserNotFoundError } from '../domain/UserNotFoundError';
 import { UserGetAll } from '../application/UserGetAll';
 import { UserGetById } from '../application/UserGetById';
@@ -23,6 +27,8 @@ export class UsersController {
     private readonly userDelete: UserDelete,
   ) {}
 
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
   async getUsers() {
     const users = await this.userGetAll.run();
